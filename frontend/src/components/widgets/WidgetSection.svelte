@@ -13,7 +13,8 @@
 	export { className as class };
 	export let classes: Record<string, boolean> = {};
 
-	let expanded = true;
+	// Whether the section is expanded is owned by the backend (persisted per node), so just reflect it here
+	$: expanded = widgetData.expanded;
 
 	// A reorderable section is a Properties panel node section the user can drag to reorder (a layer chain's node, or a pinned node)
 	$: reorderable = layoutTarget === "PropertiesPanel" && widgetData.draggable;
@@ -27,7 +28,7 @@
 		class="header"
 		class:expanded
 		data-properties-reorder-handle={reorderable ? "" : undefined}
-		on:click|stopPropagation={() => (expanded = !expanded)}
+		on:click|stopPropagation={() => editor.toggleNodePropertiesSectionExpanded(widgetData.id)}
 		tabindex="0"
 	>
 		<div class="expand-arrow"></div>
